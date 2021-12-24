@@ -6,7 +6,20 @@
     ```
     pip install -r requirements.txt
     ```
-- Dump all the data to Postgres DB from ```fre_jun.sql```.
+- Create a DB in Postgres with name ```frejun``` and Dump all the data from ```fre_jun.sql``` to it. Add the following DB details to ```settings.py```
+    ```
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'frejun',
+        'USER': 'postgres',
+        'PASSWORD': 'homedb',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        }
+    }
+    ```
+
 - Navigate to the main project directory (```frejun_project```) and Apply all the migrations by using the following commands.
     ```
     python manage.py makemigrations
