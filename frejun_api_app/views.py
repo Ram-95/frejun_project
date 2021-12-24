@@ -68,7 +68,7 @@ def inbound(request):
                 entry = f"{frm} | {to}"
                 # put into cache and expires in 4 hours
                 redis_instance.set(entry, entry, timedelta(hours=4))
-                print("STORE FROM/TO PAIR [{entry}] TO CACHE WITH EXPIRY = 4 HRS")
+                print(f"STORE FROM/TO PAIR [{entry}] TO CACHE WITH EXPIRY = 4 HRS")
 
             return Response({'message': 'inbound sms ok', 'error': ''}, status=status.HTTP_200_OK)
         else:

@@ -1,8 +1,7 @@
 import json
 import requests
-from django.test import SimpleTestCase, Client, TestCase
+from django.test import SimpleTestCase
 from django.urls import resolve, reverse
-from frejun_api_app.models import Account, PhoneNumber
 from frejun_api_app.views import inbound
 
 
@@ -19,7 +18,7 @@ class TestViews(SimpleTestCase):
         self.ph4 = PhoneNumber.objects.create(number="441873440028", account=self.account2)
     """
 
-    def test_inbound_fail_if_not_authenticated_POST(self):
+    def test_outbound_fail_if_not_authenticated_POST(self):
         data = {
             "username": "pliv5",
             "auth_id": "6DLH8A25XZ",
@@ -28,11 +27,11 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 403)
 
-    def test_inbound_pass_if_authenticated_POST(self):
+    def test_outbound_pass_if_authenticated_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -41,11 +40,11 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
 
-    def test_inbound_fail_if_method_is_GET(self):
+    def test_outbound_fail_if_method_is_GET(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -54,11 +53,11 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.get(inbound_url, json=data)
         self.assertEquals(response.status_code, 405)
 
-    def test_inbound_fail_if_method_is_PUT(self):
+    def test_outbound_fail_if_method_is_PUT(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -67,11 +66,11 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.put(inbound_url, json=data)
         self.assertEquals(response.status_code, 405)
 
-    def test_inbound_fail_if_method_is_DELETE(self):
+    def test_outbound_fail_if_method_is_DELETE(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -80,11 +79,11 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.delete(inbound_url, json=data)
         self.assertEquals(response.status_code, 405)
 
-    def test_inbound_from_missing_POST(self):
+    def test_outbound_from_missing_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -92,13 +91,13 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "from is missing"})
 
-    def test_inbound_to_missing_POST(self):
+    def test_outbound_to_missing_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -106,26 +105,26 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "to is missing"})
 
-    def test_inbound_text_missing_POST(self):
+    def test_outbound_text_missing_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
             "from": "9528631470",
             "to": "61871112939",
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "text is missing"})
 
-    def test_inbound_from_invalid_length_small_POST(self):
+    def test_outbound_from_invalid_length_small_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -134,13 +133,13 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "from is invalid"})
 
-    def test_inbound_from_invalid_length_large_POST(self):
+    def test_outbound_from_invalid_length_large_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -149,13 +148,13 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "from is invalid"})
 
-    def test_inbound_to_invalid_length_small_POST(self):
+    def test_outbound_to_invalid_length_small_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -164,13 +163,13 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "to is invalid"})
 
-    def test_inbound_to_invalid_length_large_POST(self):
+    def test_outbound_to_invalid_length_large_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -179,13 +178,13 @@ class TestViews(SimpleTestCase):
             "text": "STOP\r\n"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "to is invalid"})
 
-    def test_inbound_text_invalid_length_small_POST(self):
+    def test_outbound_text_invalid_length_small_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
@@ -194,13 +193,13 @@ class TestViews(SimpleTestCase):
             "text": ""
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "text is invalid"})
 
-    def test_inbound_text_invalid_length_large_POST(self):
+    def test_outbound_text_invalid_length_large_POST(self):
         test_text_data = 'x'*121
         data = {
             "username": "plivo5",
@@ -210,38 +209,23 @@ class TestViews(SimpleTestCase):
             "text": test_text_data
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
                              "message": "", "error": "text is invalid"})
 
-    def test_inbound_to_parameter_not_found_POST(self):
+    def test_outbound_from_parameter_not_found_POST(self):
         data = {
             "username": "plivo5",
             "auth_id": "6DLH8A25XZ",
-            "from": "4244546456",
-            "to": "645554689",
+            "from": "645554689",
+            "to": "5625654686",
             "text": "Hello World!"
 
         }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
+        inbound_url = 'http://localhost:8000/api/outbound/sms'
         response = requests.post(inbound_url, json=data)
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {
-                             "message": "", "error": "to parameter not found"})
-
-    def test_inbound_all_parameters_valid_POST(self):
-        data = {
-            "username": "plivo5",
-            "auth_id": "6DLH8A25XZ",
-            "from": "4244546456",
-            "to": "61871112939",
-            "text": "Hello World!"
-
-        }
-        inbound_url = 'http://localhost:8000/api/inbound/sms'
-        response = requests.post(inbound_url, json=data)
-        self.assertEquals(response.status_code, 200)
-        self.assertJSONEqual(str(response.content, encoding='utf8'), {
-                             "message": "inbound sms ok", "error": ""})
+                             "message": "", "error": "from parameter not found"})

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7a2mhk2yi-q38b%32-$$u_-*^vftaxeio@30*0-#*0#e*%i$3f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['frejun-task-ram.herokuapp.com']
+ALLOWED_HOSTS = ['frejun-task-ram.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -75,14 +75,16 @@ WSGI_APPLICATION = 'frejun_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 """
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -93,7 +95,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
+
 
 
 REST_FRAMEWORK = {
