@@ -31,13 +31,13 @@ ALLOWED_HOSTS = ['frejun-task-ram.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'frejun_api_app.apps.FrejunApiAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'frejun_api_app.apps.FrejunApiAppConfig',
     'rest_framework',
 ]
 
