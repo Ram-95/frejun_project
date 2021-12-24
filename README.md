@@ -6,7 +6,7 @@
     ```
     pip install -r requirements.txt
     ```
-- Create a DB in Postgres with name ```frejun``` and Dump all the data from ```fre_jun.sql``` to it. Add the following DB details to ```settings.py```
+- Create a DB in Postgres with name ```frejun```, dump all the data from ```fre_jun.sql``` to it and Add the DB details to ```settings.py```. _Below details are of my Postgres DB_.
     ```
     DATABASES = {
     'default': {
