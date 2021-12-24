@@ -1,8 +1,8 @@
-# Steps to setup, install and test the application.
+# Steps to setup, run and test the application.
 
 - Download all the files from this repository.
 - Install PostgreSQL (version: 14) and Redis.
-- First install all the required modules from ```requirements.txt```
+- First install all the required modules from ```requirements.txt``` by running the following command
     ```
     pip install -r requirements.txt
     ```
@@ -25,11 +25,11 @@
     python manage.py makemigrations
     python manage.py migrate
     ```
-- To start the application use the following command
+- #### To start the application use the following command
     ```
     python manage.py runserver
     ```
-- To run all the Unit Tests for this application, run the following command
+- #### To run all the Unit Tests for this application, run the following command
     ```
     python manage.py test
     ```
