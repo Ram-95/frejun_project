@@ -75,6 +75,7 @@ WSGI_APPLICATION = 'frejun_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
 """
 DATABASES = {
     'default': {
@@ -93,9 +94,9 @@ DATABASES = {
         'PASSWORD': 'homedb',
         'HOST': 'localhost',
         'PORT': '5432',
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
-
 
 
 REST_FRAMEWORK = {

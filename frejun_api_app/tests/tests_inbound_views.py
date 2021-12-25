@@ -1,11 +1,13 @@
 import json
+from django.test.client import Client
 import requests
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
+from frejun_api_app.models import Account, PhoneNumber
 from frejun_api_app.views import inbound
 
 
-class TestViews(SimpleTestCase):
+class TestViews(TestCase):
     """
     def setUp(self):
         self.client = Client()

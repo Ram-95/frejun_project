@@ -6,7 +6,7 @@ class Account(models.Model):
     username = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
-        managed = False
+        #managed = False
         db_table = 'account'
 
     def __str__(self):
@@ -19,7 +19,7 @@ class PhoneNumber(models.Model):
         'Account', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        #managed = False
         db_table = 'phone_number'
 
     def __str__(self):
