@@ -1,8 +1,6 @@
 import redis
 from datetime import timedelta
-from django.core.cache import cache
 from django.conf import settings
-from django.shortcuts import render
 from django.http import HttpResponse
 from .models import PhoneNumber, Account
 from rest_framework.decorators import api_view

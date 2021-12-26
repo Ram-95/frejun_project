@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase, Client
+from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 from frejun_api_app.views import *
 

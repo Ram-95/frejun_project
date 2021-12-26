@@ -1,5 +1,4 @@
 import json
-from logging import error
 import redis
 from django.conf import settings
 from rest_framework import status
