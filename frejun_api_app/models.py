@@ -2,6 +2,23 @@ from django.db import models
 
 
 class Account(models.Model):
+    auth_id = models.CharField(max_length=40, null=True, blank=True)
+    username = models.CharField(max_length=30, null=True, blank=True)
+
+    def __str__(self):
+        return f"Account({self.auth_id}, {self.username})"
+
+
+class PhoneNumber(models.Model):
+    number = models.CharField(max_length=20, null=True, blank=True)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"PhoneNumber({self.number}, {self.account})"
+
+
+"""
+class Account(models.Model):
     auth_id = models.CharField(max_length=40, blank=True, null=True)
     username = models.CharField(max_length=30, blank=True, null=True)
 
@@ -24,3 +41,4 @@ class PhoneNumber(models.Model):
 
     def __str__(self):
         return f"PhoneNumber({self.number}, {self.account})"
+"""
