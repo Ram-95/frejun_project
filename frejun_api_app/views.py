@@ -104,27 +104,28 @@ def outbound(request):
             # Block SMS
             entry = f"{to} | {frm}"
             if redis_instance.get(entry):
-                print("FETCHING TO/FROM [{entry}] PAIR DATA FROM CACHE.")
+                print(f"FETCHING TO/FROM [{entry}] PAIR DATA FROM CACHE.")
                 error_msg = f"sms from {frm} to {to} blocked by STOP request"
                 return Response({'message': '', 'error': error_msg})
 
             # API Ratelimiting to 50 requests from <from>
             if redis_instance.hget(frm, 'quota'):  # If frm is already present
-                print(f"FETCHING THE API QUOTA LIMIT FOR {frm}")
                 quota = int(redis_instance.hget(frm, 'quota'))
+                print(f"FETCHING THE API QUOTA LIMIT FOR {frm}")
                 if quota < 1:
                     error_msg = f"limit reached for from {frm}"
                     return Response({'message': '', 'error': error_msg})
                 else:   # Decrementing the quota
                     quota -= 1
+                    print(f"QUOTA VALUE: {quota}")
                     redis_instance.hset(frm, 'quota', quota)
 
             else:   # If frm is not already present - Set the key to frm and quota to 50
                 redis_instance.hset(frm, 'quota', 50)
-                print("STORING THE FROM: {frm} AND QUOTA TO 50.")
+                print(f"STORING THE FROM: {frm} AND QUOTA TO 50.")
                 # expire the key after 24 hours
                 redis_instance.expire(frm, timedelta(days=1))
-                print("SETTING THE EXPIRY OF FROM: {frm} TO 24 HOURS.")
+                print(f"SETTING THE EXPIRY OF FROM: {frm} TO 24 HOURS.")
 
             return Response({'message': 'outbound sms ok', 'error': ''}, status=status.HTTP_200_OK)
         else:
